@@ -21,7 +21,6 @@ jar {
 }
 
 scmVersion {
-    localOnly = true
     tag {
         prefix = "v"
         versionSeparator = ""
