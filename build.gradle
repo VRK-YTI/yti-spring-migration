@@ -1,0 +1,81 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath('org.jfrog.buildinfo:build-info-extractor-gradle:3.2.0')
+        classpath('org.springframework.boot:spring-boot-gradle-plugin:1.5.1.RELEASE')
+        classpath('pl.allegro.tech.build:axion-release-plugin:1.8.1')
+    }
+}
+
+apply plugin: 'pl.allegro.tech.build.axion-release'
+apply plugin: 'com.jfrog.artifactory'
+apply plugin: 'maven-publish'
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'org.springframework.boot'
+
+jar {
+    baseName = 'yti-spring-migration'
+}
+
+scmVersion {
+    localOnly = true
+    tag {
+        prefix = "v"
+        versionSeparator = ""
+    }
+}
+
+project.version = scmVersion.version
+
+task sourceJar(type: Jar) {
+    from sourceSets.main.allJava
+}
+
+repositories {
+    jcenter()
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+ext {
+    springVersion = '4.2.3.RELEASE'
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId 'fi.vm.yti'
+            artifactId 'yti-spring-migration'
+            version project.version
+
+            pom.withXml {
+                asNode().appendNode('description', 'Migration framework')
+            }
+            artifact jar
+            artifact sourceJar {
+                classifier "sources"
+            }
+        }
+    }
+}
+
+artifactory {
+    publish {
+        defaults {
+            publications('maven')
+            publishArtifacts = true
+            publishPom = true
+        }
+    }
+}
+
+dependencies {
+    compile "org.springframework.boot:spring-boot-autoconfigure"
+    compile "org.slf4j:slf4j-api:1.7.22"
+    compile "com.google.code.findbugs:jsr305:3.0.2"
+    compile "org.jetbrains:annotations:15.0"
+}
