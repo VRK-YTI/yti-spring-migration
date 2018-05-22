@@ -44,6 +44,10 @@ ext {
     springVersion = '4.2.3.RELEASE'
 }
 
+bootRepackage {
+    enabled = false
+}
+
 publishing {
     publications {
         maven(MavenPublication) {
