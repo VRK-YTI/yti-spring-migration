@@ -16,7 +16,7 @@ import static java.util.stream.Collectors.toList;
 
 @Service
 @ConditionalOnBean(MigrationTask.class)
-final class Migration {
+final public class Migration {
 
     private final Package migrationsTasksPackage;
     private final SchemaVersionAccessor schemaVersionAccessor;
@@ -41,7 +41,7 @@ final class Migration {
         );
     }
 
-    void migrate() {
+    public void migrate() {
 
         log.info("Running migrations");
 
