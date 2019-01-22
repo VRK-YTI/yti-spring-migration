@@ -9,6 +9,11 @@ buildscript {
     }
 }
 
+plugins {
+    id "org.sonarqube" version "2.6.2"
+    id "org.owasp.dependencycheck" version "4.0.2"
+}
+
 apply plugin: 'pl.allegro.tech.build.axion-release'
 apply plugin: 'com.jfrog.artifactory'
 apply plugin: 'maven-publish'
@@ -81,4 +86,23 @@ dependencies {
     compile "org.slf4j:slf4j-api:1.7.22"
     compile "com.google.code.findbugs:jsr305:3.0.2"
     compile "org.jetbrains:annotations:15.0"
+}
+
+sonarqube {
+    properties {
+        property "sonar.projectKey", "yti-spring-migration"
+        property "sonar.projectName", "yti-spring-migration"
+        property("sonar.dependencyCheck.reportPath", "$buildDir/reports/dependency-check-report.xml")
+    }
+}
+
+dependencyCheck {
+    format = 'XML'
+    autoUpdate = false
+    analyzers {
+        centralEnabled = false
+    }
+    data {
+        directory = System.getenv('OWASP_DATA_DIR')
+    }
 }
