@@ -4,15 +4,14 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath('org.jfrog.buildinfo:build-info-extractor-gradle:4.9.5')
-        classpath('org.springframework.boot:spring-boot-gradle-plugin:1.5.1.RELEASE')
-        classpath('pl.allegro.tech.build:axion-release-plugin:1.8.1')
+        classpath(group: 'org.jfrog.buildinfo', name: 'build-info-extractor-gradle', version: '4.24.14')
+        classpath('pl.allegro.tech.build:axion-release-plugin:1.13.3')
     }
 }
 
 plugins {
     id "org.sonarqube" version "2.6.2"
-    id "org.owasp.dependencycheck" version "4.0.2"
+    id "org.owasp.dependencycheck" version "6.2.2"
 }
 
 apply plugin: 'pl.allegro.tech.build.axion-release'
@@ -20,7 +19,6 @@ apply plugin: 'com.jfrog.artifactory'
 apply plugin: 'maven-publish'
 apply plugin: 'java'
 apply plugin: 'idea'
-apply plugin: 'org.springframework.boot'
 
 jar {
     baseName = 'yti-spring-migration'
@@ -44,15 +42,11 @@ repositories {
     jcenter()
 }
 
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+sourceCompatibility = 11
+targetCompatibility = 11
 
 ext {
-    springVersion = '4.2.3.RELEASE'
-}
-
-bootRepackage {
-    enabled = false
+    springVersion = '5.5.1'
 }
 
 publishing {
@@ -84,10 +78,11 @@ artifactory {
 }
 
 dependencies {
-    compile "org.springframework.boot:spring-boot-autoconfigure"
-    compile "org.slf4j:slf4j-api:1.7.22"
-    compile "com.google.code.findbugs:jsr305:3.0.2"
-    compile "org.jetbrains:annotations:15.0"
+    implementation 'org.springframework.boot:spring-boot-autoconfigure:2.7.0'
+    implementation 'org.springframework:spring-context:5.3.21'
+    compile "org.slf4j:slf4j-api:1.7.36"
+    compile "org.jetbrains:annotations:23.0.0"
+    implementation 'javax.annotation:javax.annotation-api:1.3.2'
 }
 
 sonarqube {
