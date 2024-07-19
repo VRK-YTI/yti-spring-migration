@@ -1,6 +1,6 @@
 package fi.vm.yti.migration;
 
-import javax.annotation.PostConstruct;
+import jakarta.annotation.PostConstruct;
 
 public class MigrationInitializer {
 
